@@ -27,15 +27,29 @@ mysql -h localhost -P 3306 --protocol=tcp -u root -p db_name < dump.sql
 ```
 - Configure Magento referencing 'mysql' and 'redis' as the mysql and redis server hosts respectfully. Watch out for potential port conflicts if you have previously installed MySQL server using Homebrew etc.
 
-Cleaning up
-===========
-You can stop and remove all containers easily using:
+Docker command reference
+========================
+You can stop and remove all containers easily:
 ```bash
 docker rm $(docker ps --no-trunc -aq)
 ```
 
-Images can also be removed if needed using:
+Images can also be removed massively if needed:
 ```bash
 docker rmi $(docker images -q)
 ```
 
+List running/non-running containers:
+```bash
+docker ps -a
+```
+
+Get bash access to specific container:
+```bash
+docker exec -it CONTAINER-ID-HERE bash
+```
+
+Rebuild images after modification:
+```bash
+docker-compose build
+```
