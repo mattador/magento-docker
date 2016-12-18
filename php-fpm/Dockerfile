@@ -57,4 +57,4 @@ WORKDIR /var/www
 
 CMD ["php-fpm"]
 
-EXPOSE 9000ed
+EXPOSE 9000
