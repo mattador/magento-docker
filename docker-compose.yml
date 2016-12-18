@@ -1,0 +1,76 @@
+version: '2'
+
+services:
+
+### Applications Code Container #############################
+
+    applications:
+          image: tianon/true
+        volumes:
+            - ../html:/var/www/html
+
+
+### PHP-FPM Container #######################################
+
+    php-fpm:
+        build:
+            context: ./php-fpm
+            dockerfile: Dockerfile
+        volumes_from:
+            - applications
+        expose:
+            - "9000"
+
+
+### Apache Server Container #################################
+
+    apache2:
+        build:
+            context: ./apache2
+            args:
+                - PHP_SOCKET=php-fpm:9000
+        volumes_from:
+            - applications
+        volumes:
+            - ./logs/apache2:/var/log/apache2
+        ports:
+            - "80:80"
+            - "443:443"
+        links:
+            - php-fpm
+
+### MySQL Container #########################################
+
+    mysql:
+        build: 
+            context: ./mysql
+            args:
+                - MYSQL_DATABASE=
+                - MYSQL_USER=
+                - MYSQL_PASSWORD=
+                - MYSQL_ROOT_PASSWORD=
+        volumes:
+            - ../mysql:/var/lib/mysql
+        ports:
+            - "3306:3306"
+
+### Redis Container #########################################
+
+    redis:
+        build: ./redis
+        volumes:
+            - redis:/data
+        expose:
+            - "6379"
+        ports:
+            - "6379:6379"
+
+### Volumes Setup ###########################################
+
+volumes:
+    mysql:
+        driver: "local"
+    redis:
+        driver: "local"
+    sessions:    ## nothing is connected to this (- ./data/sessions:/sessions)
+        driver: "local"
