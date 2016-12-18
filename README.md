@@ -1,11 +1,7 @@
 Magento 1 and 2 Docker Development stack
 ========================================
 
-I created this build in my quest to reduce the painful memory/cpu overhead I experienced while developing Magento 2 applications on a traditional Vagrant/VirtualBox stack.
-
-There are plenty of Magento specific builds available on Docker Hub, but none of the ones I looked into included redis for session/cache storage which was critical for me.
- 
-Laradock actually fulfilled about 80% of what I wanted (albeit full of unnecessary bells and whistles), so it made sense to use it as a reference for my own trimmed down version.
+I created this custom build in my quest to reduce the painful memory/cpu overhead I experienced while developing Magento 2 applications on a traditional Vagrant/VirtualBox stack. There are plenty of Magento specific builds available on Docker Hub, but they all currently use Docker Toolbox, where as I wanted to use native docker for MacOSX. Additionally, none of the builds that I looked at included Redis for Magento session/cache storage, which was critical for me at the time. I took some inspiration from parts of [Laradock](https://github.com/laradock/laradock).
 
 The dev stack comprises of 4 Debian-based images:
 
@@ -13,8 +9,6 @@ The dev stack comprises of 4 Debian-based images:
 - MySQL 5.7
 - Redis
 - PHP 7 (with all Magento 1 and 2 required extensions)
-
-
 
 Basic instructions
 ==================

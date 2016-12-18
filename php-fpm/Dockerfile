@@ -1,12 +1,34 @@
-FROM laradock/php-fpm:7.0--1.2
+FROM php:7.0-fpm
 
 MAINTAINER Matthew Cooper <matthew@debugthat.com>
 
-RUN echo 'deb http://security.debian.org/debian-security jessie/updates main' >> /etc/apt/sources.list
-RUN apt-get update
-RUN apt-get -y install curl libcurl4-openssl-dev libbz2-dev libicu-dev libxml2-dev libxslt1-dev
+RUN echo 'deb http://security.debian.org/debian-security jessie/updates main' >> /etc/apt/sources.list && \
+    apt-get update && \
+    apt-get install -y --no-install-recommends \
+        curl \
+        libmemcached-dev \
+        libz-dev \
+        libpq-dev \
+        libjpeg-dev \
+        libpng12-dev \
+        libfreetype6-dev \
+        libssl-dev \
+        libmcrypt-dev \
+        libcurl4-openssl-dev \
+        libbz2-dev \
+        libicu-dev \
+        libxml2-dev \
+        libxslt1-dev
+
+# Install the PHP gd library
+RUN docker-php-ext-configure gd \
+        --enable-gd-native-ttf \
+        --with-jpeg-dir=/usr/lib \
+        --with-freetype-dir=/usr/include/freetype2
 
 RUN docker-php-ext-install \
+    mcrypt \
+    pdo_mysql \
     bcmath \
     gd \
     intl \
@@ -20,9 +42,6 @@ RUN docker-php-ext-install \
 
 RUN pecl install xdebug && \
     docker-php-ext-enable xdebug
-COPY ./xdebug.ini /usr/local/etc/php/conf.d/xdebug.ini
-
-# Copy xdebug configration for remote debugging
 COPY ./xdebug.ini /usr/local/etc/php/conf.d/xdebug.ini
 
 RUN pecl install zip && \
