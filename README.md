@@ -14,16 +14,23 @@ Basic instructions
 ==================
 
 - Set up your working project directory into 2 sub folders: docker and html
-- Checkout this repository into the docker directory
+- Checkout this repository into explicitly into the docker directory
 - Edit docker-composer.yml to suit your needs, defining which directories are shared with which containers and of course remember to include your chosen MySQL credentials.
-- From the docker directory execute: ```docker-compose up -d apache2 mysql php-fpm redis```
+- From the docker directory execute: 
+```bash
+docker-compose up -d apache2 mysql php-fpm redis
+```
 - Import your database and configure Magento, referencing 'mysql' and 'redis' as the mysql and redis server hosts respectfully. Watch out for potential port conflicts if you have previously installed MySQL server using Homebrew etc.
 
 Cleaning up
 ===========
 You can stop and remove all containers easily using:
-`docker rm $(docker ps --no-trunc -aq)`
+```bash
+docker rm $(docker ps --no-trunc -aq)
+```
 
 Images can also be removed if needed using:
-`docker rmi $(docker images -q)`
+```bash
+docker rmi $(docker images -q)
+```
 
